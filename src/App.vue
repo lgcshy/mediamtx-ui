@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Monitor, VideoPlay, Connection, Link, VideoCamera, Folder, Setting, Expand, Fold } from '@element-plus/icons-vue'
+import { Monitor, VideoPlay, Connection, Link, VideoCamera, Folder, Setting, Expand, Fold, Moon, Sunny } from '@element-plus/icons-vue'
+import { useThemeStore } from './stores/theme'
 
 const isCollapse = ref(false)
 const toggleSidebar = () => {
   isCollapse.value = !isCollapse.value
 }
+
+const themeStore = useThemeStore()
 </script>
 
 <template>
@@ -86,7 +89,16 @@ const toggleSidebar = () => {
             <h2>{{ $route.meta.title || '系统控制台' }}</h2>
           </div>
           <div class="header-actions">
-            <!-- 这里可以添加用户头像、通知等 -->
+            <el-tooltip
+              :content="themeStore.currentTheme === 'dark' ? '切换到浅色模式' : '切换到深色模式'"
+              placement="bottom"
+            >
+              <el-button
+                circle
+                @click="themeStore.toggleTheme()"
+                :icon="themeStore.currentTheme === 'dark' ? Sunny : Moon"
+              />
+            </el-tooltip>
           </div>
         </div>
       </el-header>
@@ -111,12 +123,12 @@ const toggleSidebar = () => {
 <style scoped>
 .app-wrapper {
   height: 100vh;
-  background-color: #f5f7fa;
+  background-color: var(--el-bg-color);
 }
 
 .sidebar-container {
-  background-color: #001529;
-  color: #fff;
+  background-color: var(--el-menu-bg-color);
+  color: var(--el-text-color-primary);
   transition: width 0.3s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -129,7 +141,7 @@ const toggleSidebar = () => {
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background-color: #002140;
+  background-color: var(--el-menu-bg-color);
   overflow: hidden;
 }
 
@@ -141,31 +153,31 @@ const toggleSidebar = () => {
 
 .logo-icon {
   font-size: 24px;
-  color: #1890ff;
+  color: var(--el-color-primary);
 }
 
 .logo span {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: var(--el-text-color-primary);
   margin-left: 12px;
   white-space: nowrap;
 }
 
 .toggle-icon {
   font-size: 16px;
-  color: #fff;
+  color: var(--el-text-color-primary);
   cursor: pointer;
   transition: transform 0.3s;
 }
 
 .toggle-icon:hover {
-  color: #1890ff;
+  color: var(--el-color-primary);
 }
 
 .el-menu-vertical {
   border-right: none;
-  background-color: #001529;
+  background-color: var(--el-menu-bg-color);
 }
 
 .el-menu-vertical:not(.el-menu--collapse) {
@@ -180,8 +192,8 @@ const toggleSidebar = () => {
 }
 
 .app-header {
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  background-color: var(--el-bg-color);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   padding: 0;
   height: 60px;
   line-height: 60px;
@@ -199,22 +211,28 @@ const toggleSidebar = () => {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  color: #1f2d3d;
+  color: var(--el-text-color-primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .app-main {
   padding: 20px;
   overflow-y: auto;
-  background-color: #f5f7fa;
+  background-color: var(--el-bg-color-page);
   flex: 1;
 }
 
 .app-footer {
   height: 40px;
-  background-color: #fff;
-  color: #606266;
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-secondary);
   font-size: 14px;
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid var(--el-border-color-light);
   display: flex;
   align-items: center;
   justify-content: center;

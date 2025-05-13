@@ -1,10 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141414">
+    <title>MediaMTX 管理界面</title>
+    <style>
+      /* 预加载样式，防止闪烁 */
+      body {
+        background-color: #f5f7fa;
+        color: #303133;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #0a0a0a;
+          color: #e5eaf3;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>

@@ -1,109 +1,112 @@
 :root {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: #2c3e50;
-  background-color: #f5f7fa;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #1890ff;
-  text-decoration: inherit;
-  transition: color 0.2s ease;
+/* 浅色主题变量 */
+:root,
+:root.light {
+  --el-color-primary: #409eff;
+  --el-color-primary-light-3: #79bbff;
+  --el-color-primary-light-5: #a0cfff;
+  --el-color-primary-light-7: #c6e2ff;
+  --el-color-primary-light-9: #ecf5ff;
+  
+  --el-color-success: #67c23a;
+  --el-color-warning: #e6a23c;
+  --el-color-danger: #f56c6c;
+  --el-color-info: #909399;
+  
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f5f7fa;
+  --el-bg-color-overlay: #ffffff;
+  
+  --el-text-color-primary: #303133;
+  --el-text-color-regular: #606266;
+  --el-text-color-secondary: #909399;
+  --el-text-color-placeholder: #c0c4cc;
+  
+  --el-border-color: #dcdfe6;
+  --el-border-color-light: #e4e7ed;
+  --el-border-color-lighter: #ebeef5;
+  
+  --el-fill-color: #f0f2f5;
+  --el-fill-color-light: #f5f7fa;
+  --el-fill-color-lighter: #fafafa;
+  
+  --el-menu-bg-color: #001529;
+  --el-menu-text-color: rgba(255, 255, 255, 0.65);
+  --el-menu-active-color: #ffffff;
+  --el-menu-hover-bg-color: #001f3f;
+  
+  --el-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --el-box-shadow-light: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
 }
-a:hover {
-  color: #40a9ff;
+
+/* 深色主题变量 */
+:root.dark {
+  --el-color-primary: #409eff;
+  --el-color-primary-light-3: #3375b9;
+  --el-color-primary-light-5: #2a598a;
+  --el-color-primary-light-7: #213d5b;
+  --el-color-primary-light-9: #1a2c3e;
+  
+  --el-color-success: #67c23a;
+  --el-color-warning: #e6a23c;
+  --el-color-danger: #f56c6c;
+  --el-color-info: #909399;
+  
+  --el-bg-color: #141414;
+  --el-bg-color-page: #0a0a0a;
+  --el-bg-color-overlay: #1d1e1f;
+  
+  --el-text-color-primary: #e5eaf3;
+  --el-text-color-regular: #cfd3dc;
+  --el-text-color-secondary: #a3a6ad;
+  --el-text-color-placeholder: #8d9095;
+  
+  --el-border-color: #4c4d4f;
+  --el-border-color-light: #414243;
+  --el-border-color-lighter: #363637;
+  
+  --el-fill-color: #262727;
+  --el-fill-color-light: #1d1d1d;
+  --el-fill-color-lighter: #262626;
+  
+  --el-menu-bg-color: #001529;
+  --el-menu-text-color: rgba(255, 255, 255, 0.65);
+  --el-menu-active-color: #ffffff;
+  --el-menu-hover-bg-color: #001f3f;
+  
+  --el-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+  --el-box-shadow-light: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 全局样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--el-bg-color-page);
+  color: var(--el-text-color-primary);
+  transition: color 0.3s, background-color 0.3s;
 }
 
-h1 {
-  font-size: 2.5em;
-  line-height: 1.1;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-h2 {
-  font-size: 1.75em;
-  font-weight: 500;
-  margin-bottom: 0.75rem;
-}
-
-h3 {
-  font-size: 1.25em;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-button {
-  border-radius: 4px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1890ff;
-  color: white;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-button:hover {
-  background-color: #40a9ff;
-}
-button:focus,
-button:focus-visible {
-  outline: 2px solid #1890ff;
-  outline-offset: 2px;
-}
-
-.card {
-  padding: 1.5em;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  background-color: #fff;
-}
-
-#app {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* 全局过渡效果 */
+/* 过渡动画 */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -114,36 +117,67 @@ button:focus-visible {
   opacity: 0;
 }
 
-/* 响应式工具类 */
-.mt-10 { margin-top: 10px; }
-.mt-20 { margin-top: 20px; }
-.mb-10 { margin-bottom: 10px; }
-.mb-20 { margin-bottom: 20px; }
-.ml-10 { margin-left: 10px; }
-.mr-10 { margin-right: 10px; }
-.p-10 { padding: 10px; }
-.p-20 { padding: 20px; }
+/* 卡片样式 */
+.el-card {
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
 
-/* 暗黑模式 */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #e5e7eb;
-    background-color: #1f2937;
+/* 表格样式 */
+.el-table {
+  margin-bottom: 20px;
+}
+
+/* 表单样式 */
+.el-form-item {
+  margin-bottom: 22px;
+}
+
+/* 按钮组样式 */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 页面标题样式 */
+.page-title {
+  margin-bottom: 20px;
+  color: var(--el-text-color-primary);
+}
+
+/* 页面内容区域 */
+.page-container {
+  padding: 10px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .el-aside {
+    width: 64px !important;
   }
-  a {
-    color: #60a5fa;
+  
+  .el-main {
+    padding: 10px;
   }
-  a:hover {
-    color: #93c5fd;
-  }
-  .card {
-    background-color: #374151;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
-  }
-  button {
-    background-color: #3b82f6;
-  }
-  button:hover {
-    background-color: #60a5fa;
-  }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-fill-color-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-text-color-secondary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--el-text-color-regular);
 }
