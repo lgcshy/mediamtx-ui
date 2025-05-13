@@ -309,7 +309,7 @@ onMounted(() => {
 
 .status-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--el-box-shadow);
 }
 
 .status-card-content {
@@ -320,8 +320,8 @@ onMounted(() => {
 .status-icon {
   font-size: 48px;
   margin-right: 16px;
-  color: #1890ff;
-  background-color: rgba(24, 144, 255, 0.1);
+  color: var(--el-color-primary);
+  background-color: rgba(var(--el-color-primary-light-2), 0.1);
   border-radius: 50%;
   width: 64px;
   height: 64px;
@@ -331,18 +331,18 @@ onMounted(() => {
 }
 
 .source-icon {
-  color: #52c41a;
-  background-color: rgba(82, 196, 26, 0.1);
+  color: var(--el-color-success);
+  background-color: rgba(var(--el-color-success-light-2), 0.1);
 }
 
 .uptime-icon {
-  color: #fa8c16;
-  background-color: rgba(250, 140, 22, 0.1);
+  color: var(--el-color-warning);
+  background-color: rgba(var(--el-color-warning-light-2), 0.1);
 }
 
 .system-icon {
-  color: #722ed1;
-  background-color: rgba(114, 46, 209, 0.1);
+  color: var(--el-color-danger);
+  background-color: rgba(var(--el-color-danger-light-2), 0.1);
 }
 
 .status-info {
@@ -354,19 +354,20 @@ onMounted(() => {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 4px;
+  color: var(--el-text-color-primary);
 }
 
 .status-label {
   font-size: 14px;
-  color: #8c8c8c;
+  color: var(--el-text-color-secondary);
 }
 
 .status-footer {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--el-border-color-light);
   font-size: 14px;
-  color: #8c8c8c;
+  color: var(--el-text-color-secondary);
 }
 
 .card-header {
@@ -402,7 +403,7 @@ onMounted(() => {
 .protocol-bar-container {
   flex: 1;
   height: 24px;
-  background-color: #f5f5f5;
+  background-color: var(--el-bg-color);
   border-radius: 12px;
   position: relative;
   overflow: hidden;
@@ -415,15 +416,15 @@ onMounted(() => {
 }
 
 .protocol-bar.rtsp {
-  background-color: #1890ff;
+  background-color: var(--el-color-primary);
 }
 
 .protocol-bar.rtmp {
-  background-color: #52c41a;
+  background-color: var(--el-color-success);
 }
 
 .protocol-bar.hls {
-  background-color: #fa8c16;
+  background-color: var(--el-color-warning);
 }
 
 .protocol-value {
@@ -446,11 +447,11 @@ onMounted(() => {
 /* 暗黑模式适配 */
 @media (prefers-color-scheme: dark) {
   .status-footer {
-    border-top-color: #303030;
+    border-top-color: var(--el-border-color-dark);
   }
   
   .protocol-bar-container {
-    background-color: #303030;
+    background-color: var(--el-bg-color-dark);
   }
 }
 </style> 
