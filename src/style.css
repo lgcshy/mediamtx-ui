@@ -1,0 +1,149 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #2c3e50;
+  background-color: #f5f7fa;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #1890ff;
+  text-decoration: inherit;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: #40a9ff;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2.5em;
+  line-height: 1.1;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.75em;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+h3 {
+  font-size: 1.25em;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  border-radius: 4px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1890ff;
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+button:hover {
+  background-color: #40a9ff;
+}
+button:focus,
+button:focus-visible {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+}
+
+.card {
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+}
+
+#app {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 全局过渡效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 响应式工具类 */
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.ml-10 { margin-left: 10px; }
+.mr-10 { margin-right: 10px; }
+.p-10 { padding: 10px; }
+.p-20 { padding: 20px; }
+
+/* 暗黑模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #e5e7eb;
+    background-color: #1f2937;
+  }
+  a {
+    color: #60a5fa;
+  }
+  a:hover {
+    color: #93c5fd;
+  }
+  .card {
+    background-color: #374151;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+  }
+  button {
+    background-color: #3b82f6;
+  }
+  button:hover {
+    background-color: #60a5fa;
+  }
+}
