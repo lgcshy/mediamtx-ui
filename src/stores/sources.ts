@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getSources, getSourceConfig, updateSourceConfig, deleteSourceConfig } from '@/api/sourcesConfig'
+import { getSources, getSourceConfig, updateSourceConfig, deleteSourceConfig } from '../api/sourcesConfig'
 
 interface Source {
   name: string
