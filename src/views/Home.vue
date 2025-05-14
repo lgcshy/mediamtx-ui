@@ -10,7 +10,7 @@
 
     <!-- 状态卡片 -->
     <el-row :gutter="20" class="status-cards">
-      <el-col :xs="24" :sm="12" :md="8" :lg="6">
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
         <el-card class="status-card" shadow="hover">
           <div class="status-card-content">
             <div class="status-icon">
@@ -27,7 +27,7 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="12" :md="8" :lg="6">
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
         <el-card class="status-card" shadow="hover">
           <div class="status-card-content">
             <div class="status-icon source-icon">
@@ -44,7 +44,7 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="12" :md="8" :lg="6">
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
         <el-card class="status-card" shadow="hover">
           <div class="status-card-content">
             <div class="status-icon uptime-icon">
@@ -61,7 +61,7 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="12" :md="8" :lg="6">
+      <el-col :xs="24" :sm="12" :md="12" :lg="6">
         <el-card class="status-card" shadow="hover">
           <div class="status-card-content">
             <div class="status-icon system-icon">
@@ -80,9 +80,9 @@
     </el-row>
 
     <!-- 协议分布 -->
-    <el-row :gutter="20" class="mt-20">
-      <el-col :xs="24" :sm="24" :md="12">
-        <el-card shadow="hover">
+    <el-row :gutter="20" class="mt-4">
+      <el-col :xs="24" :md="12">
+        <el-card shadow="hover" class="chart-card">
           <template #header>
             <div class="card-header">
               <h3>协议分布</h3>
@@ -144,8 +144,8 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="24" :md="12">
-        <el-card shadow="hover">
+      <el-col :xs="24" :md="12">
+        <el-card shadow="hover" class="system-card">
           <template #header>
             <div class="card-header">
               <h3>系统状态</h3>
@@ -170,27 +170,29 @@
     </el-row>
 
     <!-- 最近路径和源 -->
-    <el-row :gutter="20" class="mt-20">
+    <el-row :gutter="20" class="mt-4">
       <el-col :xs="24" :md="12">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="table-card">
           <template #header>
             <div class="card-header">
               <h3>最近路径</h3>
               <el-button type="primary" text @click="$router.push('/paths')">查看全部</el-button>
             </div>
           </template>
-          <el-table :data="systemStore.paths.slice(0, 5)" style="width: 100%" v-loading="systemStore.loading">
-            <el-table-column prop="name" label="名称" min-width="120" show-overflow-tooltip />
-            <el-table-column prop="protocol" label="协议" width="80" />
-            <el-table-column prop="status" label="状态" width="80">
-              <template #default="{ row }">
-                <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
-                  {{ row.status === 'active' ? '活跃' : '未激活' }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="lastSeen" label="最后活动" width="180" />
-          </el-table>
+          <div class="responsive-table-container">
+            <el-table :data="systemStore.paths.slice(0, 5)" style="width: 100%" v-loading="systemStore.loading">
+              <el-table-column prop="name" label="名称" min-width="120" show-overflow-tooltip />
+              <el-table-column prop="protocol" label="协议" width="80" />
+              <el-table-column prop="status" label="状态" width="80">
+                <template #default="{ row }">
+                  <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
+                    {{ row.status === 'active' ? '活跃' : '未激活' }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="lastSeen" label="最后活动" width="180" class="hide-on-mobile" />
+            </el-table>
+          </div>
           <div v-if="systemStore.paths.length === 0" class="empty-data">
             <el-empty description="暂无路径数据" />
           </div>
@@ -198,25 +200,27 @@
       </el-col>
       
       <el-col :xs="24" :md="12">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="table-card">
           <template #header>
             <div class="card-header">
               <h3>最近源</h3>
               <el-button type="primary" text @click="$router.push('/sources')">查看全部</el-button>
             </div>
           </template>
-          <el-table :data="systemStore.sources.slice(0, 5)" style="width: 100%" v-loading="systemStore.loading">
-            <el-table-column prop="name" label="名称" min-width="120" show-overflow-tooltip />
-            <el-table-column prop="protocol" label="协议" width="80" />
-            <el-table-column prop="status" label="状态" width="80">
-              <template #default="{ row }">
-                <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
-                  {{ row.status === 'active' ? '活跃' : '未激活' }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="lastSeen" label="最后活动" width="180" />
-          </el-table>
+          <div class="responsive-table-container">
+            <el-table :data="systemStore.sources.slice(0, 5)" style="width: 100%" v-loading="systemStore.loading">
+              <el-table-column prop="name" label="名称" min-width="120" show-overflow-tooltip />
+              <el-table-column prop="protocol" label="协议" width="80" />
+              <el-table-column prop="status" label="状态" width="80">
+                <template #default="{ row }">
+                  <el-tag :type="row.status === 'active' ? 'success' : 'info'" size="small">
+                    {{ row.status === 'active' ? '活跃' : '未激活' }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="lastSeen" label="最后活动" width="180" class="hide-on-mobile" />
+            </el-table>
+          </div>
           <div v-if="systemStore.sources.length === 0" class="empty-data">
             <el-empty description="暂无源数据" />
           </div>
@@ -284,7 +288,7 @@ onMounted(() => {
 
 <style scoped>
 .home-container {
-  padding: 0;
+  width: 100%;
 }
 
 .page-header {
@@ -296,6 +300,7 @@ onMounted(() => {
 
 .page-header h1 {
   margin: 0;
+  font-size: 1.5rem;
 }
 
 .status-cards {
@@ -318,10 +323,10 @@ onMounted(() => {
 }
 
 .status-icon {
-  font-size: 48px;
+  font-size: 2.5rem;
   margin-right: 16px;
   color: var(--el-color-primary);
-  background-color: rgba(var(--el-color-primary-light-2), 0.1);
+  background-color: rgba(24, 144, 255, 0.1);
   border-radius: 50%;
   width: 64px;
   height: 64px;
@@ -332,17 +337,17 @@ onMounted(() => {
 
 .source-icon {
   color: var(--el-color-success);
-  background-color: rgba(var(--el-color-success-light-2), 0.1);
+  background-color: rgba(82, 196, 26, 0.1);
 }
 
 .uptime-icon {
   color: var(--el-color-warning);
-  background-color: rgba(var(--el-color-warning-light-2), 0.1);
+  background-color: rgba(250, 140, 22, 0.1);
 }
 
 .system-icon {
   color: var(--el-color-danger);
-  background-color: rgba(var(--el-color-danger-light-2), 0.1);
+  background-color: rgba(114, 46, 209, 0.1);
 }
 
 .status-info {
@@ -350,7 +355,7 @@ onMounted(() => {
 }
 
 .status-value {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 4px;
@@ -358,7 +363,7 @@ onMounted(() => {
 }
 
 .status-label {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--el-text-color-secondary);
 }
 
@@ -366,7 +371,7 @@ onMounted(() => {
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--el-border-color-light);
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--el-text-color-secondary);
 }
 
@@ -378,6 +383,7 @@ onMounted(() => {
 
 .card-header h3 {
   margin: 0;
+  font-size: 1.125rem;
 }
 
 .protocol-chart {
@@ -444,14 +450,85 @@ onMounted(() => {
   padding: 20px 0;
 }
 
-/* 暗黑模式适配 */
-@media (prefers-color-scheme: dark) {
+.chart-card, .system-card, .table-card {
+  height: 100%;
+}
+
+.responsive-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* 响应式布局适配 */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .status-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+  }
+  
+  .status-value {
+    font-size: 1.5rem;
+  }
+  
   .status-footer {
-    border-top-color: var(--el-border-color-dark);
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  
+  .card-header h3 {
+    font-size: 1rem;
+  }
+  
+  .protocol-name {
+    width: 50px;
   }
   
   .protocol-bar-container {
-    background-color: var(--el-bg-color-dark);
+    height: 20px;
+  }
+  
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .status-icon {
+    font-size: 1.75rem;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+  }
+  
+  .status-value {
+    font-size: 1.25rem;
+  }
+  
+  .protocol-name {
+    width: 40px;
+    font-size: 0.875rem;
+  }
+  
+  .protocol-bar-container {
+    height: 18px;
+  }
+  
+  .protocol-value {
+    font-size: 0.75rem;
+    right: 8px;
   }
 }
 </style> 
