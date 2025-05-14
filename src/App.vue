@@ -1,19 +1,61 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { Monitor, VideoPlay, Connection, Link, VideoCamera, Folder, Setting, Expand, Fold, Moon, Sunny } from '@element-plus/icons-vue'
 import { useThemeStore } from './stores/theme'
+import { useRoute } from 'vue-router'
 
 const isCollapse = ref(false)
+const isMobile = ref(false)
+const route = useRoute()
+
 const toggleSidebar = () => {
   isCollapse.value = !isCollapse.value
 }
 
 const themeStore = useThemeStore()
+
+// 检测设备类型
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 768
+  if (isMobile.value && !isCollapse.value) {
+    isCollapse.value = true
+  }
+}
+
+// 监听窗口大小变化
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkIsMobile)
+})
+
+// 在移动设备上，路由变化时自动折叠侧边栏
+watch(
+  () => route.path,
+  () => {
+    if (isMobile.value) {
+      isCollapse.value = true
+    }
+  }
+)
 </script>
 
 <template>
   <el-container class="app-wrapper">
-    <el-aside :width="isCollapse ? '64px' : '220px'" class="sidebar-container">
+    <!-- 移动设备遮罩层 -->
+    <div 
+      v-if="isMobile && !isCollapse" 
+      class="mobile-mask"
+      @click="isCollapse = true"
+    ></div>
+    
+    <el-aside 
+      :width="isCollapse ? '64px' : '220px'" 
+      :class="['sidebar-container', {'mobile-sidebar': isMobile && !isCollapse}]"
+    >
       <div class="logo-container">
         <div class="logo">
           <el-icon class="logo-icon"><VideoCamera /></el-icon>
@@ -85,8 +127,12 @@ const themeStore = useThemeStore()
     <el-container class="main-container">
       <el-header class="app-header">
         <div class="header-content">
-          <div class="header-title">
-            <h2>{{ $route.meta.title || '系统控制台' }}</h2>
+          <div class="header-left">
+            <el-icon class="menu-toggle" @click="toggleSidebar">
+              <Expand v-if="isCollapse" />
+              <Fold v-else />
+            </el-icon>
+            <h2 class="header-title">{{ $route.meta.title || '系统控制台' }}</h2>
           </div>
           <div class="header-actions">
             <el-tooltip
@@ -129,7 +175,7 @@ const themeStore = useThemeStore()
 .sidebar-container {
   background-color: var(--el-menu-bg-color);
   color: var(--el-text-color-primary);
-  transition: width 0.3s;
+  transition: width 0.3s, transform 0.3s;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   z-index: 1000;
@@ -207,7 +253,19 @@ const themeStore = useThemeStore()
   padding: 0 20px;
 }
 
-.header-title h2 {
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-toggle {
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+}
+
+.header-title {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
@@ -242,37 +300,57 @@ const themeStore = useThemeStore()
   text-align: center;
 }
 
-/* 暗黑模式适配 */
-@media (prefers-color-scheme: dark) {
+/* 移动设备适配 */
+.mobile-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1001;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+  
   .sidebar-container {
-    background-color: #1f2937;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
   }
   
-  .logo-container {
-    background-color: #111827;
-  }
-  
-  .el-menu-vertical {
-    background-color: #1f2937;
-  }
-  
-  .app-header {
-    background-color: #1f2937;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .header-title h2 {
-    color: #e5e7eb;
+  .mobile-sidebar {
+    transform: translateX(0);
   }
   
   .app-main {
-    background-color: #111827;
+    padding: 15px;
+  }
+  
+  .header-content {
+    padding: 0 15px;
+  }
+  
+  .header-title {
+    font-size: 16px;
   }
   
   .app-footer {
-    background-color: #1f2937;
-    color: #9ca3af;
-    border-top: 1px solid #374151;
+    font-size: 12px;
   }
 }
 </style>
