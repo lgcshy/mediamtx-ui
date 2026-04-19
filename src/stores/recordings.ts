@@ -1,58 +1,33 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { listRecordings, getRecording } from '@/api/recordings'
-import type { Recording } from '@/types/recording'
+import { listRecordings, getRecording, deleteRecordingSegment } from '@/api/recordings'
+import type { APIRecording, APIListResponse } from '@/types/api'
 
 export const useRecordingsStore = defineStore('recordings', () => {
-  const list = ref<Recording[]>([])
+  const list = ref<APIRecording[]>([])
+  const itemCount = ref(0)
   const loading = ref(false)
 
-  // 获取录制文件列表
-  const fetchRecordings = async () => {
+  const fetchList = async (page = 0, itemsPerPage = 100) => {
     loading.value = true
     try {
-      const response = await listRecordings()
-      list.value = response.items
+      const res = await listRecordings(page, itemsPerPage) as unknown as APIListResponse<APIRecording>
+      list.value = res.items || []
+      itemCount.value = res.itemCount || 0
     } finally {
       loading.value = false
     }
   }
 
-  // 获取单个录制文件详情
-  const fetchRecording = async (name: string) => {
-    try {
-      const response = await getRecording(name)
-      return response
-    } catch (error) {
-      throw error
-    }
+  const fetchOne = async (name: string) => {
+    const res = await getRecording(name)
+    return res as unknown as APIRecording
   }
 
-  // 下载录制文件
-  const downloadRecording = async (name: string) => {
-    try {
-      const response = await fetch(`/api/v3/recordings/${name}/download`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/octet-stream'
-        }
-      })
-
-      if (!response.ok) {
-        throw new Error('下载失败')
-      }
-
-      return await response.blob()
-    } catch (error) {
-      throw error
-    }
+  const deleteSegment = async (path: string, start: string) => {
+    await deleteRecordingSegment(path, start)
+    await fetchList()
   }
 
-  return {
-    list,
-    loading,
-    fetchRecordings,
-    fetchRecording,
-    downloadRecording
-  }
-}) 
+  return { list, itemCount, loading, fetchList, fetchOne, deleteSegment }
+})

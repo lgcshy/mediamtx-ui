@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-header">
-      <h1>RTMP 连接 <el-tag size="small" round>{{ store.itemCount }}</el-tag></h1>
+      <h1>RTSP 会话 <el-tag size="small" round>{{ store.itemCount }}</el-tag></h1>
       <div class="page-actions">
         <el-switch v-model="autoRefreshCtrl.active.value" active-text="自动刷新" @change="autoRefreshCtrl.toggle" />
         <el-button :icon="Refresh" @click="loadData" :loading="store.loading">刷新</el-button>
@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="操作" width="80" fixed="right">
           <template #default="{ row }">
-            <el-popconfirm title="确定踢出此连接？" @confirm="handleKick(row.id)">
+            <el-popconfirm title="确定踢出此会话？" @confirm="handleKick(row.id)">
               <template #reference>
                 <el-button text type="danger" size="small">踢出</el-button>
               </template>
@@ -35,20 +35,20 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-empty v-if="!store.loading && store.list.length === 0" description="暂无 RTMP 连接" />
+      <el-empty v-if="!store.loading && store.list.length === 0" description="暂无 RTSP 会话" />
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRtmpConnStore } from '@/stores/rtmpConn'
+import { useRtspSessionStore } from '@/stores/rtspSession'
 import { useAutoRefresh } from '@/composables/useAutoRefresh'
 import { formatBytes, formatState } from '@/composables/useFormatters'
 import { ElMessage } from 'element-plus'
 import { Refresh } from '@element-plus/icons-vue'
 
-const store = useRtmpConnStore()
+const store = useRtspSessionStore()
 const loadData = () => store.fetchList()
 const autoRefreshCtrl = useAutoRefresh(loadData)
 

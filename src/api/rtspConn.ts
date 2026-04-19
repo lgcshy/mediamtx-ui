@@ -1,21 +1,9 @@
 import api from '@/api'
 
-// 获取 RTSP 连接列表
-export const getRTSPConnections = () => {
-  return api.get('/v3/rtspconns/list')
-}
+// RTSP 连接是只读的，不可关闭（只有 Sessions 可以 kick）
 
-// 获取特定 RTSP 连接的详细信息
-export const getRTSPConnection = (id: string) => {
-  return api.get(`/v3/rtspconns/get/${id}`)
-}
+export const getRTSPConnections = (page = 0, itemsPerPage = 100) =>
+  api.get('/v3/rtspconns/list', { params: { page, itemsPerPage } })
 
-// 关闭特定 RTSP 连接
-export const closeRTSPConnection = (id: string) => {
-  return api.post(`/v3/rtspconns/close/${id}`)
-}
-
-// 关闭所有 RTSP 连接
-export const closeAllRTSPConnections = () => {
-  return api.post('/v3/rtspconns/closeall')
-} 
+export const getRTSPConnection = (id: string) =>
+  api.get(`/v3/rtspconns/get/${id}`)

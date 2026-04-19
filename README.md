@@ -1,80 +1,102 @@
-# MediaMTX 管理界面
+# MediaMTX Admin UI
 
-这是一个基于 Vue 3 + TypeScript 开发的 MediaMTX 流媒体服务器管理界面。
+[中文](README_zh.md) | English
 
-## 功能特性
+A modern web admin dashboard for [MediaMTX](https://github.com/bluenviron/mediamtx) streaming media server, built with Vue 3 and TypeScript.
 
-- 系统状态监控
-- 路径管理
-- 源管理
-- 配置管理
-- 支持 RTSP、RTMP、HLS 等协议
+## Features
 
-## 技术栈
+- **Dashboard** — Real-time overview with server info, path statistics, source type distribution (pie chart), and protocol connection counts (bar chart) powered by ECharts
+- **Path Management** — Live path status monitoring and path configuration CRUD
+- **Connection Management** — View and manage connections/sessions across all protocols:
+  - RTSP Connections (read-only) & Sessions (kickable)
+  - RTMP Connections (kickable)
+  - WebRTC Sessions (kickable)
+  - HLS Muxers (read-only)
+  - SRT Connections (kickable)
+- **Recording Management** — Browse recordings and delete segments
+- **Global Configuration** — Edit all MediaMTX server settings (General, Auth, RTSP, RTMP, HLS, WebRTC, SRT, API, Recording)
+- **Theme Switching** — Light / Dark theme with adaptive sidebar colors
+- **Auto Refresh** — Configurable auto-refresh for connection views
 
-- Vue 3
-- TypeScript
-- Vite
-- Element Plus
-- Pinia
-- Vue Router
-- Axios
+## Tech Stack
 
-## 开发环境要求
+| Category | Technology |
+|----------|------------|
+| Framework | Vue 3 (Composition API, `<script setup>`) |
+| Language | TypeScript (strict mode) |
+| Build Tool | Vite |
+| UI Library | Element Plus |
+| State Management | Pinia |
+| Charts | ECharts + vue-echarts |
+| HTTP Client | Axios |
+| Router | Vue Router 4 |
+
+## Prerequisites
 
 - Node.js >= 16
 - npm >= 7
+- [MediaMTX](https://github.com/bluenviron/mediamtx) server with API enabled
 
-## 安装
+## Quick Start
+
+### 1. Start MediaMTX with API enabled
+
+Option A — Use the included dev config (requires Go):
 
 ```bash
-# 安装依赖
+npm run dev:api
+```
+
+Option B — Start MediaMTX manually with `api: true` in your config:
+
+```yaml
+api: true
+apiAddress: :9997
+```
+
+### 2. Start the UI dev server
+
+```bash
 npm install
-
-# 启动开发服务器
 npm run dev
+```
 
-# 构建生产版本
+### 3. Open in browser
+
+```
+http://localhost:3000
+```
+
+The dev server proxies `/api/*` requests to `http://localhost:9997` (MediaMTX API).
+
+## Build
+
+```bash
 npm run build
 ```
 
-## 使用说明
+Output goes to `dist/`. Serve with any static file server and proxy `/api/*` to your MediaMTX instance.
 
-1. 确保 MediaMTX 服务器已经启动
-2. 启动管理界面
-3. 访问 http://localhost:3000
+## Project Structure
 
-## 配置说明
-
-在 `vite.config.ts` 中配置 API 代理：
-
-```typescript
-server: {
-  proxy: {
-    '/api': {
-      target: 'http://localhost:9997',
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api/, '')
-    }
-  }
-}
+```
+src/
+├── api/            # Axios API modules (one per resource)
+├── composables/    # Shared composables (formatters, auto-refresh)
+├── router/         # Vue Router config with lazy loading
+├── stores/         # Pinia stores (one per resource)
+├── types/          # TypeScript types matching MediaMTX API
+├── views/          # Page components
+├── App.vue         # Layout (sidebar + header + main)
+├── main.ts         # App entry (Element Plus, ECharts, Router, Pinia)
+└── style.css       # Global styles with CSS custom properties
 ```
 
-## 开发计划
+## API Compatibility
 
-- [ ] 实现所有 MediaMTX API 接口
-- [ ] 添加用户认证
-- [ ] 优化 UI/UX
-- [ ] 添加更多功能
+All API calls target **MediaMTX v3 REST API** (`/v3/...`). The type definitions in `src/types/api.ts` are derived from the MediaMTX Go source code (`internal/defs/api*.go`).
 
-## 贡献指南
-
-1. Fork 本仓库
-2. 创建特性分支
-3. 提交更改
-4. 推送到分支
-5. 创建 Pull Request
-
-## 许可证
+## License
 
 MIT

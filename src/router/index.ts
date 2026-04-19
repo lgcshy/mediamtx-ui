@@ -1,12 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Paths from '@/views/Paths.vue'
-import Sources from '@/views/Sources.vue'
-import Config from '@/views/Config.vue'
-import RtmpConnections from '@/views/RtmpConnections.vue'
-import RtspConnections from '@/views/RtspConnections.vue'
-import WebRTCSessions from '@/views/WebRTCSessions.vue'
-import Recordings from '@/views/Recordings.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,82 +6,74 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home,
-      meta: {
-        title: '系统状态',
-        icon: 'Monitor'
-      }
+      component: () => import('@/views/Home.vue'),
+      meta: { title: '仪表盘' }
     },
     {
       path: '/paths',
       name: 'paths',
-      component: Paths,
-      meta: {
-        title: '路径管理',
-        icon: 'Connection'
-      }
+      component: () => import('@/views/Paths.vue'),
+      meta: { title: '路径状态' }
     },
     {
-      path: '/sources',
-      name: 'sources',
-      component: Sources,
-      meta: {
-        title: '源管理',
-        icon: 'VideoPlay'
-      }
+      path: '/paths/config',
+      name: 'pathsConfig',
+      component: () => import('@/views/PathsConfig.vue'),
+      meta: { title: '路径配置' }
     },
     {
-      path: '/config',
-      name: 'config',
-      component: Config,
-      meta: {
-        title: '配置管理',
-        icon: 'Setting'
-      }
+      path: '/rtsp/connections',
+      name: 'rtspConnections',
+      component: () => import('@/views/RtspConnections.vue'),
+      meta: { title: 'RTSP 连接' }
     },
     {
-      path: '/rtmp-connections',
-      name: 'rtmp-connections',
-      component: RtmpConnections,
-      meta: {
-        title: 'RTMP 连接',
-        icon: 'Link'
-      }
+      path: '/rtsp/sessions',
+      name: 'rtspSessions',
+      component: () => import('@/views/RtspSessions.vue'),
+      meta: { title: 'RTSP 会话' }
     },
     {
-      path: '/rtsp-connections',
-      name: 'rtsp-connections',
-      component: RtspConnections,
-      meta: {
-        title: 'RTSP 连接',
-        icon: 'Link'
-      }
+      path: '/rtmp/connections',
+      name: 'rtmpConnections',
+      component: () => import('@/views/RtmpConnections.vue'),
+      meta: { title: 'RTMP 连接' }
     },
     {
-      path: '/webrtc-sessions',
-      name: 'webrtc-sessions',
-      component: WebRTCSessions,
-      meta: {
-        title: 'WebRTC 会话',
-        icon: 'VideoCamera'
-      }
+      path: '/webrtc/sessions',
+      name: 'webrtcSessions',
+      component: () => import('@/views/WebRTCSessions.vue'),
+      meta: { title: 'WebRTC 会话' }
+    },
+    {
+      path: '/hls/muxers',
+      name: 'hlsMuxers',
+      component: () => import('@/views/HlsMuxers.vue'),
+      meta: { title: 'HLS Muxers' }
+    },
+    {
+      path: '/srt/connections',
+      name: 'srtConnections',
+      component: () => import('@/views/SrtConnections.vue'),
+      meta: { title: 'SRT 连接' }
     },
     {
       path: '/recordings',
       name: 'recordings',
-      component: Recordings,
-      meta: {
-        title: '录制文件',
-        icon: 'Folder'
-      }
+      component: () => import('@/views/Recordings.vue'),
+      meta: { title: '录制管理' }
+    },
+    {
+      path: '/config',
+      name: 'config',
+      component: () => import('@/views/Config.vue'),
+      meta: { title: '系统配置' }
     }
   ]
 })
 
-// 路由守卫：设置页面标题
-router.beforeEach((to, _from, next) => {
-  document.title = `${to.meta.title} - MediaMTX 管理界面`
-  next()
+router.beforeEach((to) => {
+  document.title = `${to.meta.title || 'MediaMTX'} - MediaMTX Admin`
 })
 
-export default router 
+export default router

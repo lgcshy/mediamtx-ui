@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-header">
-      <h1>RTMP 连接 <el-tag size="small" round>{{ store.itemCount }}</el-tag></h1>
+      <h1>SRT 连接 <el-tag size="small" round>{{ store.itemCount }}</el-tag></h1>
       <div class="page-actions">
         <el-switch v-model="autoRefreshCtrl.active.value" active-text="自动刷新" @change="autoRefreshCtrl.toggle" />
         <el-button :icon="Refresh" @click="loadData" :loading="store.loading">刷新</el-button>
@@ -19,11 +19,14 @@
         </el-table-column>
         <el-table-column prop="path" label="路径" min-width="150" show-overflow-tooltip />
         <el-table-column prop="remoteAddr" label="远程地址" width="160" />
-        <el-table-column label="入站" width="100">
-          <template #default="{ row }">{{ formatBytes(row.inboundBytes || 0) }}</template>
+        <el-table-column label="发送包" width="100" align="center">
+          <template #default="{ row }">{{ row.packetsSent || 0 }}</template>
         </el-table-column>
-        <el-table-column label="出站" width="100">
-          <template #default="{ row }">{{ formatBytes(row.outboundBytes || 0) }}</template>
+        <el-table-column label="接收包" width="100" align="center">
+          <template #default="{ row }">{{ row.packetsReceived || 0 }}</template>
+        </el-table-column>
+        <el-table-column label="RTT (ms)" width="90" align="center">
+          <template #default="{ row }">{{ row.msRTT?.toFixed(1) || '-' }}</template>
         </el-table-column>
         <el-table-column label="操作" width="80" fixed="right">
           <template #default="{ row }">
@@ -35,20 +38,20 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-empty v-if="!store.loading && store.list.length === 0" description="暂无 RTMP 连接" />
+      <el-empty v-if="!store.loading && store.list.length === 0" description="暂无 SRT 连接" />
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRtmpConnStore } from '@/stores/rtmpConn'
+import { useSrtConnStore } from '@/stores/srtConn'
 import { useAutoRefresh } from '@/composables/useAutoRefresh'
-import { formatBytes, formatState } from '@/composables/useFormatters'
+import { formatState } from '@/composables/useFormatters'
 import { ElMessage } from 'element-plus'
 import { Refresh } from '@element-plus/icons-vue'
 
-const store = useRtmpConnStore()
+const store = useSrtConnStore()
 const loadData = () => store.fetchList()
 const autoRefreshCtrl = useAutoRefresh(loadData)
 

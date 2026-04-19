@@ -1,0 +1,70 @@
+###############################################
+# MediaMTX 开发配置 - API 已启用
+# 用法: cd ../mediamtx && go build -o mediamtx . && ./mediamtx ../mediamtx-ui/mediamtx-dev.yml
+###############################################
+
+logLevel: info
+logDestinations: [stdout]
+
+readTimeout: 10s
+writeTimeout: 10s
+writeQueueSize: 512
+udpMaxPayloadSize: 1452
+
+###############################################
+# Authentication
+authMethod: internal
+authInternalUsers:
+  - user: any
+    pass:
+    permissions:
+      - action: publish
+      - action: read
+      - action: playback
+  - user: any
+    pass:
+    ips: [127.0.0.1, ::1]
+    permissions:
+      - action: api
+
+###############################################
+# Control API - ENABLED for development
+api: true
+apiAddress: :9997
+apiEncryption: false
+apiAllowOrigins: ['*']
+
+###############################################
+# RTSP
+rtsp: true
+rtspAddress: :8554
+rtspsAddress: :8322
+
+###############################################
+# RTMP
+rtmp: true
+rtmpAddress: :1935
+
+###############################################
+# HLS
+hls: true
+hlsAddress: :8888
+
+###############################################
+# WebRTC
+webrtc: true
+webrtcAddress: :8889
+
+###############################################
+# SRT
+srt: true
+srtAddress: :8890
+
+###############################################
+# Recording
+record: false
+
+###############################################
+# Paths
+paths:
+  all_others:

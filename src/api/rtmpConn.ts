@@ -1,21 +1,10 @@
 import api from '@/api'
 
-// 获取 RTMP 连接列表
-export const getRTMPConnections = () => {
-  return api.get('/v3/rtmpconns/list')
-}
+export const getRTMPConnections = (page = 0, itemsPerPage = 100) =>
+  api.get('/v3/rtmpconns/list', { params: { page, itemsPerPage } })
 
-// 获取特定 RTMP 连接的详细信息
-export const getRTMPConnection = (id: string) => {
-  return api.get(`/v3/rtmpconns/get/${id}`)
-}
+export const getRTMPConnection = (id: string) =>
+  api.get(`/v3/rtmpconns/get/${id}`)
 
-// 关闭特定 RTMP 连接
-export const closeRTMPConnection = (id: string) => {
-  return api.post(`/v3/rtmpconns/close/${id}`)
-}
-
-// 关闭所有 RTMP 连接
-export const closeAllRTMPConnections = () => {
-  return api.post('/v3/rtmpconns/closeall')
-} 
+export const kickRTMPConnection = (id: string) =>
+  api.post(`/v3/rtmpconns/kick/${id}`)

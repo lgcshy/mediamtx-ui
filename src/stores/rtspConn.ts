@@ -1,79 +1,28 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getRtspConnections, getRtspConnection, closeRtspConnection, closeAllRtspConnections } from '@/api/rtspConnConfig'
-
-interface RtspConnection {
-  id: string
-  state: string
-  path: string
-  created: string
-  bytesReceived: number
-  bytesSent: number
-  clientIP: string
-  clientPort: number
-  serverIP: string
-  serverPort: number
-}
+import { getRTSPConnections, getRTSPConnection } from '@/api/rtspConn'
+import type { APIRTSPConn, APIListResponse } from '@/types/api'
 
 export const useRtspConnStore = defineStore('rtspConn', () => {
-  const list = ref<RtspConnection[]>([])
+  const list = ref<APIRTSPConn[]>([])
+  const itemCount = ref(0)
   const loading = ref(false)
 
-  // 获取连接列表
-  const fetchList = async () => {
+  const fetchList = async (page = 0, itemsPerPage = 100) => {
     loading.value = true
     try {
-      const response = await getRtspConnections()
-      list.value = response.items
-    } catch (error) {
-      throw error
+      const res = await getRTSPConnections(page, itemsPerPage) as unknown as APIListResponse<APIRTSPConn>
+      list.value = res.items || []
+      itemCount.value = res.itemCount || 0
     } finally {
       loading.value = false
     }
   }
 
-  // 获取连接详情
-  const getConnection = async (id: string) => {
-    try {
-      const response = await getRtspConnection(id)
-      return response
-    } catch (error) {
-      throw error
-    }
+  const fetchOne = async (id: string) => {
+    const res = await getRTSPConnection(id)
+    return res as unknown as APIRTSPConn
   }
 
-  // 关闭单个连接
-  const closeConnection = async (id: string) => {
-    loading.value = true
-    try {
-      await closeRtspConnection(id)
-      await fetchList()
-    } catch (error) {
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  // 关闭所有连接
-  const closeAllConnections = async () => {
-    loading.value = true
-    try {
-      await closeAllRtspConnections()
-      await fetchList()
-    } catch (error) {
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  return {
-    list,
-    loading,
-    fetchList,
-    getConnection,
-    closeConnection,
-    closeAllConnections
-  }
-}) 
+  return { list, itemCount, loading, fetchList, fetchOne }
+})

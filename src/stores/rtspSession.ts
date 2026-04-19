@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getWebRTCSessions, getWebRTCSession, kickWebRTCSession } from '@/api/webrtc'
-import type { APIWebRTCSession, APIListResponse } from '@/types/api'
+import { getRTSPSessions, getRTSPSession, kickRTSPSession } from '@/api/rtspSession'
+import type { APIRTSPSession, APIListResponse } from '@/types/api'
 
-export const useWebRTCStore = defineStore('webrtc', () => {
-  const list = ref<APIWebRTCSession[]>([])
+export const useRtspSessionStore = defineStore('rtspSession', () => {
+  const list = ref<APIRTSPSession[]>([])
   const itemCount = ref(0)
   const loading = ref(false)
 
   const fetchList = async (page = 0, itemsPerPage = 100) => {
     loading.value = true
     try {
-      const res = await getWebRTCSessions(page, itemsPerPage) as unknown as APIListResponse<APIWebRTCSession>
+      const res = await getRTSPSessions(page, itemsPerPage) as unknown as APIListResponse<APIRTSPSession>
       list.value = res.items || []
       itemCount.value = res.itemCount || 0
     } finally {
@@ -20,12 +20,12 @@ export const useWebRTCStore = defineStore('webrtc', () => {
   }
 
   const fetchOne = async (id: string) => {
-    const res = await getWebRTCSession(id)
-    return res as unknown as APIWebRTCSession
+    const res = await getRTSPSession(id)
+    return res as unknown as APIRTSPSession
   }
 
   const kick = async (id: string) => {
-    await kickWebRTCSession(id)
+    await kickRTSPSession(id)
     list.value = list.value.filter(s => s.id !== id)
   }
 

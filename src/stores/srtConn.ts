@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getRTMPConnections, getRTMPConnection, kickRTMPConnection } from '@/api/rtmpConn'
-import type { APIRTMPConn, APIListResponse } from '@/types/api'
+import { getSRTConnections, getSRTConnection, kickSRTConnection } from '@/api/srtConn'
+import type { APISRTConn, APIListResponse } from '@/types/api'
 
-export const useRtmpConnStore = defineStore('rtmpConn', () => {
-  const list = ref<APIRTMPConn[]>([])
+export const useSrtConnStore = defineStore('srtConn', () => {
+  const list = ref<APISRTConn[]>([])
   const itemCount = ref(0)
   const loading = ref(false)
 
   const fetchList = async (page = 0, itemsPerPage = 100) => {
     loading.value = true
     try {
-      const res = await getRTMPConnections(page, itemsPerPage) as unknown as APIListResponse<APIRTMPConn>
+      const res = await getSRTConnections(page, itemsPerPage) as unknown as APIListResponse<APISRTConn>
       list.value = res.items || []
       itemCount.value = res.itemCount || 0
     } finally {
@@ -20,12 +20,12 @@ export const useRtmpConnStore = defineStore('rtmpConn', () => {
   }
 
   const fetchOne = async (id: string) => {
-    const res = await getRTMPConnection(id)
-    return res as unknown as APIRTMPConn
+    const res = await getSRTConnection(id)
+    return res as unknown as APISRTConn
   }
 
   const kick = async (id: string) => {
-    await kickRTMPConnection(id)
+    await kickSRTConnection(id)
     list.value = list.value.filter(c => c.id !== id)
   }
 

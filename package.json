@@ -5,15 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "cd ../mediamtx && go build -o mediamtx . && ./mediamtx ../mediamtx-ui/mediamtx-dev.yml",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
+    "echarts": "^6.0.0",
     "element-plus": "^2.5.6",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
+    "vue-echarts": "^8.0.1",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
