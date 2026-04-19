@@ -266,6 +266,7 @@ export function useWebRTCPlayer(
     pc.ontrack = (evt) => {
       if (videoRef.value && evt.streams[0]) {
         videoRef.value.srcObject = evt.streams[0]
+        videoRef.value.play().catch(() => {})
         error.value = ''
         setState('connected')
       }
@@ -315,7 +316,13 @@ export function useWebRTCPlayer(
       method: 'PATCH',
       headers: { 'Content-Type': 'application/trickle-ice-sdpfrag', 'If-Match': '*' },
       body: generateSdpFragment(offerData, candidates),
-    }).catch((err) => handleError(err.toString()))
+    })
+      .then((res) => {
+        if (res.status !== 204) {
+          throw new Error(`PATCH failed: ${res.status}`)
+        }
+      })
+      .catch((err) => handleError(err.toString()))
   }
 
   async function start() {

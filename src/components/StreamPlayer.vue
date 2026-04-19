@@ -74,8 +74,10 @@ const isMuted = ref(true)
 let controlsTimer: ReturnType<typeof setTimeout> | null = null
 
 function getWhepUrl() {
-  const base = props.whepBaseUrl || '/webrtc'
-  return `${base}/${props.pathName}/whep`
+  if (props.whepBaseUrl) return `${props.whepBaseUrl}/${props.pathName}/whep`
+  // Use direct connection to MediaMTX WebRTC server (same host, port 8889)
+  // Vite proxy interferes with WHEP protocol headers, so we connect directly
+  return `${window.location.protocol}//${window.location.hostname}:8889/${props.pathName}/whep`
 }
 
 function startPlayer() {
