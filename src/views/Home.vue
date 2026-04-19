@@ -71,19 +71,44 @@
         <el-table-column label="出站流量" width="110">
           <template #default="{ row }">{{ formatBytes(row.outboundBytes || 0) }}</template>
         </el-table-column>
+        <el-table-column label="操作" width="80" fixed="right">
+          <template #default="{ row }">
+            <el-button text type="success" size="small" :disabled="!row.online" @click="openPlayer(row)">播放</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-empty v-if="!systemStore.loading && systemStore.paths.length === 0" description="暂无路径" />
     </el-card>
+
+    <!-- Player Dialog -->
+    <el-dialog
+      v-model="playerVisible"
+      :title="`播放 - ${playingPath}`"
+      width="720px"
+      destroy-on-close
+      align-center
+    >
+      <StreamPlayer v-if="playerVisible" :pathName="playingPath" />
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useSystemStore } from '@/stores/system'
 import { formatBytes, formatUptime, formatSourceType } from '@/composables/useFormatters'
 import { Refresh, Connection, VideoPlay, Timer, UserFilled } from '@element-plus/icons-vue'
+import StreamPlayer from '@/components/StreamPlayer.vue'
+import type { APIPath } from '@/types/api'
 
 const systemStore = useSystemStore()
+const playerVisible = ref(false)
+const playingPath = ref('')
+
+const openPlayer = (row: APIPath) => {
+  playingPath.value = row.name
+  playerVisible.value = true
+}
 
 const statCards = computed(() => [
   {

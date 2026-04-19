@@ -17,6 +17,11 @@ export default defineConfig({
         target: 'http://localhost:9997',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '/webrtc': {
+        target: 'http://localhost:8889',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/webrtc/, '')
       }
     }
   }

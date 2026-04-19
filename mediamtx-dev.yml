@@ -49,11 +49,13 @@ rtmpAddress: :1935
 # HLS
 hls: true
 hlsAddress: :8888
+hlsAllowOrigins: ['*']
 
 ###############################################
 # WebRTC
 webrtc: true
 webrtcAddress: :8889
+webrtcAllowOrigins: ['*']
 
 ###############################################
 # SRT

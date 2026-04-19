@@ -35,8 +35,9 @@
         <el-table-column label="出站" width="110">
           <template #default="{ row }">{{ formatBytes(row.outboundBytes || 0) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="80" fixed="right">
+        <el-table-column label="操作" width="130" fixed="right">
           <template #default="{ row }">
+            <el-button text type="success" size="small" :disabled="!row.online" @click="openPlayer(row)">播放</el-button>
             <el-button text type="primary" size="small" @click="showDetail(row)">详情</el-button>
           </template>
         </el-table-column>
@@ -68,6 +69,17 @@
         <el-tag v-for="(r, i) in currentPath.readers" :key="i" type="success" style="margin: 0 4px 4px 0">{{ r.type }}</el-tag>
       </template>
     </el-drawer>
+
+    <!-- Player Dialog -->
+    <el-dialog
+      v-model="playerVisible"
+      :title="`播放 - ${playingPath}`"
+      width="720px"
+      destroy-on-close
+      align-center
+    >
+      <StreamPlayer v-if="playerVisible" :pathName="playingPath" />
+    </el-dialog>
   </div>
 </template>
 
@@ -76,12 +88,15 @@ import { ref, computed, onMounted } from 'vue'
 import { usePathsStore } from '@/stores/paths'
 import { formatBytes, formatSourceType } from '@/composables/useFormatters'
 import { Refresh, Search } from '@element-plus/icons-vue'
+import StreamPlayer from '@/components/StreamPlayer.vue'
 import type { APIPath } from '@/types/api'
 
 const store = usePathsStore()
 const search = ref('')
 const drawerVisible = ref(false)
 const currentPath = ref<APIPath | null>(null)
+const playerVisible = ref(false)
+const playingPath = ref('')
 
 const filteredList = computed(() => {
   if (!search.value) return store.list
@@ -92,6 +107,11 @@ const filteredList = computed(() => {
 const showDetail = (row: APIPath) => {
   currentPath.value = row
   drawerVisible.value = true
+}
+
+const openPlayer = (row: APIPath) => {
+  playingPath.value = row.name
+  playerVisible.value = true
 }
 
 const loadData = () => store.fetchList()
